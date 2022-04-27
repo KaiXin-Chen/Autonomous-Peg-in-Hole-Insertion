@@ -8,12 +8,15 @@ from torch import nn
 
 class Encoder(nn.Module):
     # TODO: Implement the encoder template for visual inputs
-    def __init__(self):
+    def __init__(self, feature_extractor):
         super().__init__()
+        self.feat = feature_extractor
 
     def forward(self, x):
-        return None
+        feat = self.feat(x)
+        return feat
 
 def make_vision_encoder():
     # TODO: make vision encoders using the above template
-    return Encoder()
+    fea = resnet18()
+    return Encoder(fea)

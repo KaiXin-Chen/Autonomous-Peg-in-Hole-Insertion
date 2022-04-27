@@ -45,7 +45,7 @@ class RobotLearning(LightningModule):
             """
             raise NotImplementedError
         # TODO: Implement the below training steps, how to calculate loss and accuracy
-        vision_img, gt_action  = batch
+        vision_img, gt_action = batch
         pred_action = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
         loss = compute_loss(pred_action, gt_action)
         train_acc = 0

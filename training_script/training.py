@@ -29,7 +29,7 @@ def main(args):
     actor = robotActor(vision_encoder, imi_model)
 
     # define optimizer and lr scheduler
-    optimizer = torch.optim.Adam(imi_model.parameters(), lr=args.lr)
+    optimizer = torch.optim.Adam(actor.parameters(), lr=args.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=args.period, gamma=args.gamma)
     # save config
     exp_dir = save_config(args)

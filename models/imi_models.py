@@ -7,5 +7,15 @@ import torch
 from torch import nn
 
 class Imi_networks(nn.Module):
+    def __init__(self):
+        super.__init__()
+        self.model = nn.Sequential(
+            nn.Linear(1024, 3)
+        )
+
+    def forward(self, x):
+        return self.model(x)
+
     raise NotImplementedError
+
 
