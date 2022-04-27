@@ -1,0 +1,12 @@
+pyaml
+pytorch_lightning
+opencv-python
+pandas
+soundfile
+matplotlib
+configargparse
+torchaudio
+torchvision
+tomlkit
+h5py
+tqdm
