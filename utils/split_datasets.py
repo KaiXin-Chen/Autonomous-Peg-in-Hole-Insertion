@@ -1,3 +1,6 @@
+"""
+This file will split the entire dataset into training set and test set
+"""
 import pandas as pd
 import os
 import numpy as np
