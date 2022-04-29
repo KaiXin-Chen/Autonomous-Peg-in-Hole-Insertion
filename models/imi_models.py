@@ -9,6 +9,11 @@ from torch import nn
 class Imi_networks(nn.Module):
     def __init__(self):
         super.__init__()
+
+        '''
+        天恒 我VISION ENCODER用的是ResNet 18 做的transfer learning, output shape 应该是512，你用512作为input shape就好
+        '''
+
         self.model = nn.Sequential(
             nn.Linear(1024, 3)
         )
