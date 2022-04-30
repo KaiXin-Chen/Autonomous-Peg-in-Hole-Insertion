@@ -45,12 +45,25 @@ class RobotLearning(LightningModule):
             """
             # return torch.nn.functional.mse_loss( pred, demo ) + 0.01* torch.sum(pred*demo<0)/torch.numel(demo)
             # try look ahead
+
+            # ADE and maximum_diff can be used as metrics for a batch as well.
+            ADE = np.average(np.sqrt(np.sum(np.square(pred[:,0:3]-demo[:,0:3]),axis=1)),axis=0)
+            maximum_diff = np.max(np.sqrt(np.sum(np.square(pred[:,0:3]-demo[:,0:3]),axis=1)))
+            # FDE only make sense when the demo/pred is sequential
+            FDE = np.sqrt(np.sum(np.square(pred[-1:,0:3]-demo[-1:,0:3]),axis=1))
+
+            
             return torch.nn.functional.mse_loss( pred[:,0:2], demo[:,0:2] ) + 2*torch.nn.functional.mse_loss( pred[:,2], demo[:,2] )
         # TODO: Implement the below training steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
         pred_action = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
         loss = compute_loss(pred_action, gt_action)
-        train_acc = torch.sum(torch.abs(pred_action- gt_action)< 0.00075)/torch.numel(gt_action)#
+        train_acc = torch.sum(torch.abs(pred_action- gt_action)< 0.00075)/torch.numel(gt_action)
+        
+        
+        
+
+
         self.log_dict({"train/loss": loss})
         self.log_dict({"train/acc": train_acc})
         return loss
