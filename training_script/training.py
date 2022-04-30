@@ -9,19 +9,30 @@ from models.imi_models import Imi_networks
 from engine.engine import RobotLearning
 from models.actors import robotActor
 from torch.utils.data import DataLoader
-import os
-import yaml
-from pytorch_lightning import Trainer
-from pytorch_lightning.callbacks import ModelCheckpoint
 from boilerplate import *
+import pandas as pd
 
 def main(args):
 
+    # get the csv file storing all episodes
+    train_csv = pd.read_csv(args.train_csv)
+    val_csv = pd.read_csv(args.val_csv)
+    # count training set len and val set len
+    if args.num_episode is None:
+        train_num_episode = len(train_csv)
+        val_num_episode = len(val_csv)
+    else:
+        train_num_episode = args.num_episode
+        val_num_episode = args.num_episode
+
     # define dataset and data loaders
-    train_set = ImiDataset(args.train_csv, args.data_folder)
-    val_set = ImiDataset(args.val_csv, args.data_folder)
-    train_loader = DataLoader(train_set, args.batch_size, num_workers=8)
-    val_loader = DataLoader(val_set, 1, num_workers=0)
+    train_set = torch.utils.data.ConcatDataset(
+        [ImiDataset(args.train_csv, args, i, args.data_folder) for i in range(train_num_episode)])
+    val_set = torch.utils.data.ConcatDataset(
+        [ImiDataset(args.val_csv, args, i, args.data_folder, False) for i in
+         range(val_num_episode)])
+    train_loader = DataLoader(train_set, args.batch_size, num_workers=8, shuffle=True)
+    val_loader = DataLoader(val_set, 1, num_workers=8)
 
     # define vision encoder and imitation network and combine them in the actor
     vision_encoder = make_vision_encoder()
@@ -55,6 +66,9 @@ if __name__ == "__main__":
     p.add("--train_csv", default="train.csv")
     p.add("--val_csv", default="val.csv")
     p.add("--data_folder", default="data/test_recordings")
+    p.add("--resized_height", required = True, type=int)
+    p.add("--resized_width", required = True, type=int)
+
 
     args = p.parse_args()
     main(args)

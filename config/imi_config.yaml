@@ -1,0 +1,9 @@
+--batch_size: 8
+--lr: 0.001
+--gamma: 0.9
+--period: 3
+--epochs: 50
+--num_workers: 8
+--freeze_till: 5
+--resize_height: 320
+--resize_width: 240
