@@ -14,6 +14,7 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         feats = self.feature_extractor(x)["avgpool"]
+        # here is just adjust the shape of features to be (..., 512), delete redundant dim
         feats = feats.squeeze(3).squeeze(2)
         # final dim is (..., 512), may add another fc layer to change the output dim
         return feats
