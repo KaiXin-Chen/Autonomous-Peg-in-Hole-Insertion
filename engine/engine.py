@@ -45,7 +45,7 @@ class RobotLearning(LightningModule):
             """
             # return torch.nn.functional.mse_loss( pred, demo ) + 0.01* torch.sum(pred*demo<0)/torch.numel(demo)
             # try look ahead
-            return torch.nn.functional.mse_loss( pred, demo )
+            return torch.nn.functional.mse_loss( pred[:,0:2], demo[:,0:2] ) + 2*torch.nn.functional.mse_loss( pred[:,2], demo[:,2] )
         # TODO: Implement the below training steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
         pred_action = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
@@ -64,7 +64,7 @@ class RobotLearning(LightningModule):
             demo:
                 The ground truth action from the human demonstration
             """
-            return torch.nn.functional.mse_loss( pred, demo )
+            return torch.nn.functional.mse_loss( pred[:,0:2], demo[:,0:2] ) + 2*torch.nn.functional.mse_loss( pred[:,2], demo[:,2] )
         # TODO: Implement the below validation steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
         #with torch.no_grad():
