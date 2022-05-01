@@ -52,7 +52,7 @@ if __name__ == "__main__":
     import configargparse
 
     p = configargparse.ArgParser()
-    p.add("-c", "--config", is_config_file=True, default="config/imi_config.yaml")
+    p.add("-c", "--config", is_config_file=True, default="../config/imi_config.yaml")
     p.add("--batch_size", default=8)
     p.add("--lr", default=0.001)
     p.add("--gamma", default=0.9)
@@ -66,8 +66,8 @@ if __name__ == "__main__":
     p.add("--train_csv", default="train.csv")
     p.add("--val_csv", default="val.csv")
     p.add("--data_folder", default="data/test_recordings")
-    p.add("--resized_height", required = True, type=int)
-    p.add("--resized_width", required = True, type=int)
+    p.add("--resized_height", required=False, default=320, type=int)# required should be True, don't forget to change back
+    p.add("--resized_width", required=False, default=240, type=int)#
 
 
     args = p.parse_args()
