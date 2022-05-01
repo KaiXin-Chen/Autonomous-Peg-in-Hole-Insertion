@@ -82,13 +82,21 @@ class RobotLearning(LightningModule):
             demo:
                 The ground truth action from the human demonstration
             """
-            return torch.nn.functional.mse_loss( pred[:,0:2], demo[:,0:2] ) + 2*torch.nn.functional.mse_loss( pred[:,2], demo[:,2] )
+            return torch.nn.functional(pred, demo)
         # TODO: Implement the below validation steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
-        #with torch.no_grad():
-        pred_action = self.actor(vision_img, True)
-        loss = compute_loss(pred_action, gt_action)
-        val_acc = torch.sum(torch.abs(pred_action- gt_action)< 0.00075)/torch.numel(gt_action)
+        logits = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
+        N, _ = logits.size()
+        logits = logits.view(N, 3, 3)
+        logits = torch.nn.functional.softmax(logits, -1)
+        gt_action[:, :2] /= 0.003
+        gt_action[:, 2] /= 0.0015
+        gt_act_1hot = torch.zeros(N, 3, 3)
+        gt_act_1hot[:, :, 0] = 1 * (gt_action < -0.5)
+        gt_act_1hot[:, :, 1] = 1 * (-0.5 <= gt_action <= 0.5)
+        gt_act_1hot[:, :, 2] = 1 * (gt_action > 0.5)
+        loss = compute_loss(logits, gt_act_1hot)
+        val_acc = torch.sum(torch.argmax(logits, axis=-1) == torch.argmax(gt_action, axis=-1)) / N / 3
         self.log_dict({"val/loss": loss})
         self.log_dict({"val/acc": val_acc})
         return loss
