@@ -54,8 +54,8 @@ class RobotLearning(LightningModule):
             return self.cce(pred, demo)
         # TODO: Implement the below training steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
-        vision_img = Variable(vision_img).cuda()
-        gt_action = Variable(gt_action).cuda()
+        vision_img = Variable(vision_img.type(torch.FloatTensor)).cuda()
+        gt_action = Variable(gt_action.type(torch.LongTensor)).cuda()
         logits = self.actor(vision_img, self.current_epoch < self.config.freeze_till)
         # The main task here is to reshape and normalize logits and ground truth such that we can apply cross entropy on the results as well as being able to calculate the accuracy
         N,_ =logits.size()
@@ -74,7 +74,7 @@ class RobotLearning(LightningModule):
         loss = compute_loss(logits, gt_action)
         # train_acc = torch.sum(torch.argmax(logits,axis=-1)==torch.argmax(gt_action,axis=-1))/N/3
 
-        values = {'train/loss': loss, 'train/acc': 0}
+        values = {'train/loss': loss, 'train/acc': 0.0}
         self.log_dict(values)
         return loss
 
@@ -91,8 +91,8 @@ class RobotLearning(LightningModule):
         # TODO: Implement the below validation steps, how to calculate loss and accuracy
 
         vision_img, gt_action = batch
-        vision_img = Variable(vision_img).cuda()
-        gt_action = Variable(gt_action).cuda()
+        vision_img = Variable(vision_img.type(torch.FloatTensor)).cuda()
+        gt_action = Variable(gt_action.type(torch.LongTensor)).cuda()
         logits = self.actor(vision_img, self.current_epoch < self.config.freeze_till)
         N, _ = logits.size()
         logits = logits.view(N, 3, 3)
@@ -106,7 +106,7 @@ class RobotLearning(LightningModule):
         # gt_act_1hot = gt_action.cuda(0)
         loss = compute_loss(logits, gt_action)
         # val_acc = torch.sum(torch.argmax(logits, axis=-1) == torch.argmax(gt_act_1hot, axis=-1)) / N / 3
-        values = {'val/loss': loss, 'val/acc': 0}
+        values = {'val/loss': loss, 'val/acc': 0.0}
         self.log_dict(values)
         return loss
 

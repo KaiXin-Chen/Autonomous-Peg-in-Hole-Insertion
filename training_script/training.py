@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # data
     p.add("--train_csv", default="train.csv")
     p.add("--val_csv", default="val.csv")
-    p.add("--data_folder", default="data/test_recordings")
+    p.add("--data_folder", default="data/data_0214/test_recordings")
     p.add("--resized_height", required=True, type=int)
     p.add("--resized_width", required=True, type=int)
 
