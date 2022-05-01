@@ -43,26 +43,31 @@ class RobotLearning(LightningModule):
             demo:
                 The ground truth action from the human demonstration
             """
-            # return torch.nn.functional.mse_loss( pred, demo ) + 0.01* torch.sum(pred*demo<0)/torch.numel(demo)
-            # try look ahead
-
             # ADE and maximum_diff can be used as metrics for a batch as well.
             ADE = np.average(np.sqrt(np.sum(np.square(pred[:,0:3]-demo[:,0:3]),axis=1)),axis=0)
             maximum_diff = np.max(np.sqrt(np.sum(np.square(pred[:,0:3]-demo[:,0:3]),axis=1)))
             # FDE only make sense when the demo/pred is sequential
             FDE = np.sqrt(np.sum(np.square(pred[-1:,0:3]-demo[-1:,0:3]),axis=1))
-
             
-            return torch.nn.functional.mse_loss( pred[:,0:2], demo[:,0:2] ) + 2*torch.nn.functional.mse_loss( pred[:,2], demo[:,2] )
+            return torch.nn.functional(pred, demo)
         # TODO: Implement the below training steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
-        pred_action = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
-        loss = compute_loss(pred_action, gt_action)
-        train_acc = torch.sum(torch.abs(pred_action- gt_action)< 0.00075)/torch.numel(gt_action)
-        
-        
-        
-
+        logits = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
+        # The main task here is to reshape and normalize logits and ground truth such that we can apply cross entropy on the results as well as being able to calculate the accuracy
+        N,_ =logits.size()
+        # reshape to 3 channels per sample, which is x,y,z, and each channel has three classes negitive 0 positive so nx3x3
+        logits=logits.view(N,3,3)
+        # convert them to probabilities
+        logits= torch.nn.functional.softmax(logits, -1)
+        # convert gt action to (N,3,3), where at axis=-1 it is a one hot vector
+        gt_action[:,:2]/=0.003
+        gt_action[:, 2]/=0.0015
+        gt_act_1hot= torch.zeros(N,3,3)
+        gt_act_1hot[:,:,0]=1*(gt_action<-0.5)
+        gt_act_1hot[:, :, 1] = 1 * (-0.5<=gt_action<= 0.5)
+        gt_act_1hot[:, :, 2] = 1 * ( gt_action > 0.5)
+        loss = compute_loss(logits, gt_act_1hot)
+        train_acc = torch.sum(torch.argmax(logits,axis=-1)==torch.argmax(gt_action,axis=-1))/N/3
 
         self.log_dict({"train/loss": loss})
         self.log_dict({"train/acc": train_acc})

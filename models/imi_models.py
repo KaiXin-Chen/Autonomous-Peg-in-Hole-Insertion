@@ -10,9 +10,7 @@ class Imi_networks(nn.Module):
     def __init__(self):
         super.__init__()
 
-        '''
-        天恒 我VISION ENCODER用的是ResNet 18 做的transfer learning, output shape 应该是512，你用512作为input shape就好
-        '''
+
 
         self.model = nn.Sequential(
             nn.Linear(512, 100),
@@ -20,11 +18,11 @@ class Imi_networks(nn.Module):
             nn.ReLU(),
             nn.Linear(100, 60),
             nn.ReLU(),
-            nn.Linear(60, 3),
+            nn.Linear(60, 9),
         )
 
     def forward(self, x):
-        return self.model(x).flatten()
+        return self.model(x.flatten())
 
     raise NotImplementedError
 
