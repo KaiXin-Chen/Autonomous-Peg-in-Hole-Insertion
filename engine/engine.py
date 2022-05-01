@@ -72,9 +72,9 @@ class RobotLearning(LightningModule):
         # gt_act_1hot[:, :, 1] = 1 - gt_act_1hot[:, :, 0] - gt_act_1hot[:, :, 2]
         # gt_act_1hot = gt_act_1hot.cuda(0)
         loss = compute_loss(logits, gt_action)
-        # train_acc = torch.sum(torch.argmax(logits,axis=-1)==torch.argmax(gt_action,axis=-1))/N/3
+        train_acc = torch.sum(torch.argmax(logits,axis=-1)==gt_action)/N/3
 
-        values = {'train/loss': loss, 'train/acc': 0.0}
+        values = {'train/loss': loss, 'train/acc': train_acc}
         self.log_dict(values)
         return loss
 
@@ -105,9 +105,9 @@ class RobotLearning(LightningModule):
 
         # gt_act_1hot = gt_action.cuda(0)
         loss = compute_loss(logits, gt_action)
-        # val_acc = torch.sum(torch.argmax(logits, axis=-1) == torch.argmax(gt_act_1hot, axis=-1)) / N / 3
-        values = {'val/loss': loss, 'val/acc': 0.0}
-        self.log_dict(values)
+        val_acc = torch.sum(torch.argmax(logits,axis=-1)==gt_action)/N/3
+        values = {'val/loss': loss, 'val/acc': val_acc}
+        #self.log_dict(values)
         return loss
 
     def train_dataloader(self):
