@@ -18,8 +18,8 @@ class robotActor(torch.nn.Module):
     def forward(self, visual_input, freeze):
         if freeze:
             with torch.no_grad():
-                visual_feats = self.v_encoder(visual_input).detach()
+                visual_feats = self.vision_encoder(visual_input).detach()
         else:
-            visual_feats = self.v_encoder(visual_input)
+            visual_feats = self.vision_encoder(visual_input)
         action_logits = self.imi_models(visual_feats)
         return action_logits

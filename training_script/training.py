@@ -60,7 +60,7 @@ if __name__ == "__main__":
     p.add("--epochs", default=50,type=int)
     p.add("--num_episode", default=None)
     p.add("--resume", default=None)
-    p.add("--num_workers", default=8, type=int)
+    p.add("--num_workers", default=2, type=int) # defult used to be 8
     p.add("--num_camera", default=1, type=int)
     # imi_stuff
     p.add("--freeze_till", required = True, type=int)
