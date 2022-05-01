@@ -37,7 +37,7 @@ def main(args):
     # define vision encoder and imitation network and combine them in the actor
     vision_encoder = make_vision_encoder()
     imi_model = Imi_networks()
-    actor = robotActor(vision_encoder, imi_model)
+    actor = robotActor(vision_encoder, imi_model,args)
 
     # define optimizer and lr scheduler
     optimizer = torch.optim.Adam(actor.parameters(), lr=args.lr)
@@ -52,22 +52,25 @@ if __name__ == "__main__":
     import configargparse
 
     p = configargparse.ArgParser()
-    p.add("-c", "--config", is_config_file=True, default="../config/imi_config.yaml")
-    p.add("--batch_size", default=8)
-    p.add("--lr", default=0.001)
-    p.add("--gamma", default=0.9)
-    p.add("--period", default=3)
-    p.add("--epochs", default=50)
+    p.add("-c", "--config", is_config_file=True, default="config/imi_config.yaml")
+    p.add("--batch_size", default=8,type=int)
+    p.add("--lr", default=0.001, type=float)
+    p.add("--gamma", default=0.9, type=float)
+    p.add("--period", default=3,type=int)
+    p.add("--epochs", default=50,type=int)
+    p.add("--num_episode", default=None)
     p.add("--resume", default=None)
     p.add("--num_workers", default=8, type=int)
+    p.add("--num_camera", default=1, type=int)
     # imi_stuff
     p.add("--freeze_till", required = True, type=int)
     # data
     p.add("--train_csv", default="train.csv")
     p.add("--val_csv", default="val.csv")
     p.add("--data_folder", default="data/test_recordings")
-    p.add("--resized_height", required=False, default=320, type=int)# required should be True, don't forget to change back
-    p.add("--resized_width", required=False, default=240, type=int)#
+    p.add("--resized_height", required=True, type=int)
+    p.add("--resized_width", required=True, type=int)
+
 
 
     args = p.parse_args()

@@ -103,11 +103,11 @@ class RobotLearning(LightningModule):
 
     def train_dataloader(self):
         """Training dataloader"""
-        return self.train_loader
+        return self.train_set_loader
 
     def val_dataloader(self):
         """Validation dataloader"""
-        return self.val_loader
+        return self.val_set_loader
 
     def configure_optimizers(self):
         return [self.optimizer], [self.scheduler]

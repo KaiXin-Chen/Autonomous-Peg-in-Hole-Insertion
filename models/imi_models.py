@@ -8,7 +8,7 @@ from torch import nn
 
 class Imi_networks(nn.Module):
     def __init__(self):
-        super.__init__()
+        super().__init__()
 
         self.model = nn.Sequential(
             nn.Flatten(),

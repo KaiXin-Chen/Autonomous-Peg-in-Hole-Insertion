@@ -10,12 +10,12 @@ from dataset.DatasetPlate import BaseDataset
 
 class ImiDataset(BaseDataset):
     def __init__(self, log_file, args, dataset_idx, data_folder="data/test_recordings_0214", train=True):
-        super(self).__init__()
+        super().__init__(log_file)
         self.train = train
         self.num_cam = args.num_camera
         self.resized_height = args.resized_height
         self.resized_width = args.resized_width
-        self.trial, self.timestamps, self.audio_gripper, self.audio_holebase, self.num_frames = self.get_episode(
+        self.trial, self.timestamps, self.num_frames = self.get_episode(
             dataset_idx)
 
     def __len__(self):
