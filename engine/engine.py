@@ -49,7 +49,7 @@ class RobotLearning(LightningModule):
             # FDE only make sense when the demo/pred is sequential
             FDE = np.sqrt(np.sum(np.square(pred[-1:,0:3]-demo[-1:,0:3]),axis=1))
             
-            return torch.nn.functional(pred, demo)
+            return torch.nn.functional.cross_entropy(pred, demo)
         # TODO: Implement the below training steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
         logits = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
@@ -60,8 +60,8 @@ class RobotLearning(LightningModule):
         # convert them to probabilities
         logits= torch.nn.functional.softmax(logits, -1)
         # convert gt action to (N,3,3), where at axis=-1 it is a one hot vector
-        gt_action[:,:2]/=0.003
-        gt_action[:, 2]/=0.0015
+        gt_action=torch.sign(gt_action)
+
         gt_act_1hot= torch.zeros(N,3,3)
         gt_act_1hot[:,:,0]=1*(gt_action<-0.5)
         gt_act_1hot[:, :, 1] = 1 * (-0.5<=gt_action<= 0.5)
@@ -82,15 +82,15 @@ class RobotLearning(LightningModule):
             demo:
                 The ground truth action from the human demonstration
             """
-            return torch.nn.functional(pred, demo)
+            return torch.nn.functional.cross_entropy(pred, demo)
         # TODO: Implement the below validation steps, how to calculate loss and accuracy
         vision_img, gt_action = batch
         logits = self.actor(vision_img, self.current_epoch < self.config.freeze_until)
+
         N, _ = logits.size()
         logits = logits.view(N, 3, 3)
         logits = torch.nn.functional.softmax(logits, -1)
-        gt_action[:, :2] /= 0.003
-        gt_action[:, 2] /= 0.0015
+        gt_action=torch.sign(gt_action)
         gt_act_1hot = torch.zeros(N, 3, 3)
         gt_act_1hot[:, :, 0] = 1 * (gt_action < -0.5)
         gt_act_1hot[:, :, 1] = 1 * (-0.5 <= gt_action <= 0.5)

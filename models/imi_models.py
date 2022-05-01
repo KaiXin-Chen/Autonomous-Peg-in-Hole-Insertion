@@ -10,9 +10,9 @@ class Imi_networks(nn.Module):
     def __init__(self):
         super.__init__()
 
-
-
         self.model = nn.Sequential(
+            nn.Flatten(),
+            nn.BatchNorm1d(512),
             nn.Linear(512, 100),
             nn.BatchNorm1d(100),
             nn.ReLU(),
@@ -22,8 +22,7 @@ class Imi_networks(nn.Module):
         )
 
     def forward(self, x):
-        return self.model(x.flatten())
+        return self.model(x)
 
-    raise NotImplementedError
 
 

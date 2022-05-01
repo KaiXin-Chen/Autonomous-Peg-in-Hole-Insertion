@@ -6,7 +6,7 @@ import torch
 from torch.utils.data.dataset import Dataset
 import pandas as pd
 from torchvision import transforms as T
-from DatasetPlate import BaseDataset
+from dataset.DatasetPlate import BaseDataset
 
 class ImiDataset(BaseDataset):
     def __init__(self, log_file, args, dataset_idx, data_folder="data/test_recordings_0214", train=True):
