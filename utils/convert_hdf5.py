@@ -8,6 +8,8 @@ def convert_episode(data_folder, logs, idx):
     print(idx)
     format_time = logs.iloc[idx].Time.replace(":", "_")
     trial = os.path.join(data_folder, format_time)
+    print(os.path.join(trial, "data.hdf5"))
+
     all_datasets = h5py.File(os.path.join(trial, "data.hdf5"), 'r')
     streams = ["cam_gripper_color", "cam_fixed_color"]
     for stream in streams:
@@ -21,7 +23,7 @@ def convert_episode(data_folder, logs, idx):
                     cv2.imwrite(out_file, img)
 
 if __name__ == "__main__":
-    logs = pd.read_csv("data/data_0214/episode_times.csv")
-    data_folder = "data/data_0214/test_recordings"
+    logs = pd.read_csv("data/test_recordings_0214/episode_times.csv")
+    data_folder = "data/test_recordings_0214"
     for idx in range(len(logs)):
         convert_episode(data_folder, logs, idx)
