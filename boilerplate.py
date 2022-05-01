@@ -22,7 +22,7 @@ def save_config(args):
     dt = now.strftime("%m%d%Y")
     exp_dir = os.path.join("exp" + dt, config_name)
     if not os.path.exists(exp_dir):
-        os.makedirs(exp_dir)
+        os.makedirs(exp_dir, 0o777)
     with open(os.path.join(exp_dir, "conf.yaml"), "w") as outfile:
         yaml.safe_dump(vars(args), outfile)
     return exp_dir

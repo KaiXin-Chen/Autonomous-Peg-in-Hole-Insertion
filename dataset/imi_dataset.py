@@ -64,4 +64,4 @@ class ImiDataset(BaseDataset):
         action = torch.as_tensor(
             [xy_space[action[0]], xy_space[action[1]], z_space[action[2]]])
         # finally return visual image of [..., 3, H, W] and action of size [..., 3]
-        return v_input, action[0]
+        return v_input, action
