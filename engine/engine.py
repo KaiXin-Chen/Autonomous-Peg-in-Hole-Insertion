@@ -76,7 +76,9 @@ class RobotLearning(LightningModule):
 
         values = {'train/loss': loss, 'train/acc': 0}
         #self.log_dict(values)
-        return loss
+        return {'loss':loss,'accu':train_acc}
+
+
 
     def validation_step(self, batch, batch_idx):
         
@@ -108,7 +110,19 @@ class RobotLearning(LightningModule):
         val_acc = torch.sum(torch.argmax(logits,axis=-1)==gt_action)/N/3
         values = {'val/loss': loss, 'val/acc': 0}
         #self.log_dict(values)
-        return loss
+        return {'loss':loss,'accu':val_acc}
+
+
+    def validation_epoch_end(self, val_step_outputs) :
+        val_acc=torch.tensor([ dict['accu'] for dict in val_step_outputs]).cuda()
+        values = {'val/epoch_acc': torch.mean(val_acc)}
+        self.log_dict(values)
+
+
+    def train_epoch_end(self, train_step_outputs) :
+        train_acc=torch.tensor([ dict['accu'] for dict in train_step_outputs]).cuda()
+        values = {'train/epoch_acc': torch.mean(train_acc)}
+        self.log_dict(values)
 
     def train_dataloader(self):
         """Training dataloader"""
