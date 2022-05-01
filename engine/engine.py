@@ -107,7 +107,7 @@ class RobotLearning(LightningModule):
         loss = compute_loss(logits, gt_action)
         val_acc = torch.sum(torch.argmax(logits,axis=-1)==gt_action)/N/3
         values = {'val/loss': loss, 'val/acc': val_acc}
-        #self.log_dict(values)
+        self.log_dict(values)
         return loss
 
     def train_dataloader(self):

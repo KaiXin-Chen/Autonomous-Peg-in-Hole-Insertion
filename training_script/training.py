@@ -31,8 +31,8 @@ def main(args):
     val_set = torch.utils.data.ConcatDataset(
         [ImiDataset(args.val_csv, args, i, args.data_folder, False) for i in
          range(val_num_episode)])
-    train_loader = DataLoader(train_set, args.batch_size, num_workers=2, shuffle=True)
-    val_loader = DataLoader(val_set, 1, num_workers=2)
+    train_loader = DataLoader(train_set, args.batch_size, num_workers=8, shuffle=True)
+    val_loader = DataLoader(val_set, 1, num_workers=8)
 
     # define vision encoder and imitation network and combine them in the actor
     vision_encoder = make_vision_encoder()
