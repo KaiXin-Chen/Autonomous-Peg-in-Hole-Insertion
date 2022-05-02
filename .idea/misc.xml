@@ -5,6 +5,10 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
+          <option name="caretOffset" value="1484" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/training_script/training.py" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
           <option name="caretOffset" value="0" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/DatasetPlate.py" />
         </OpenedFileInfo>
@@ -13,8 +17,8 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/imi_dataset.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/training_script/training.py" />
+          <option name="caretOffset" value="86" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/val.csv" />
         </OpenedFileInfo>
       </list>
     </option>
