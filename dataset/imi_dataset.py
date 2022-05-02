@@ -10,7 +10,7 @@ from dataset.DatasetPlate import BaseDataset
 
 class ImiDataset(BaseDataset):
     def __init__(self, log_file, args, dataset_idx, data_folder="data/test_recordings_0214", train=True):
-        super().__init__(log_file)
+        super().__init__(log_file, data_folder)
         self.train = train
         self.num_cam = args.num_camera
         self.resized_height = args.resized_height

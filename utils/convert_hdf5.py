@@ -23,7 +23,7 @@ def convert_episode(data_folder, logs, idx):
                     cv2.imwrite(out_file, img)
 
 if __name__ == "__main__":
-    logs = pd.read_csv("data/test_recordings_0214/episode_times.csv")
-    data_folder = "data/test_recordings_0214"
+    logs = pd.read_csv("data/data_0214/episode_times.csv")
+    data_folder = "data/data_0214/test_recordings"
     for idx in range(len(logs)):
         convert_episode(data_folder, logs, idx)
