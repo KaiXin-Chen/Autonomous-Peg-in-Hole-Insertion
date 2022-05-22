@@ -36,8 +36,9 @@ def main(args):
 
     # define vision encoder and imitation network and combine them in the actor
     vision_encoder = make_vision_encoder()
+    pos_encoder = make_pos_encoder()
     imi_model = Imi_networks()
-    actor = robotActor(vision_encoder, imi_model,args)
+    actor = robotActor(vision_encoder, pos_encoder, imi_model,args)
 
     # define optimizer and lr scheduler
     optimizer = torch.optim.Adam(actor.parameters(), lr=args.lr)
@@ -70,6 +71,7 @@ if __name__ == "__main__":
     p.add("--data_folder", default="data/data_0214/test_recordings")
     p.add("--resized_height", required=True, type=int)
     p.add("--resized_width", required=True, type=int)
+    p.add("--crop_per", required=True, type=float)
 
 
 

@@ -26,3 +26,9 @@ def make_vision_encoder():
     # this layer contains the visual features we want
     vision_extractor = create_feature_extractor(vision_extractor, ["avgpool"])
     return Encoder(vision_extractor)
+
+def make_pos_encoder():
+    pos_extractor = resnet18(pretrained=True)
+    pos_extractor.conv1 = nn.Conv2d(1, 64, kernerl_size = 7, size = 1, padding = 3, bias = False)
+    pos_extractor = create_feature_extractor(pos_extractor, ["avgpool"])
+    return Encoder(pos_extractor)

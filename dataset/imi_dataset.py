@@ -15,6 +15,8 @@ class ImiDataset(BaseDataset):
         self.num_cam = args.num_camera
         self.resized_height = args.resized_height
         self.resized_width = args.resized_width
+        self._croped_height = args.resized_height * (1 - args.crop_per)
+        self._croped_width = args.resized_width * (1 - args.crop_per)
         self.trial, self.timestamps, self.num_frames = self.get_episode(
             dataset_idx)
 
@@ -29,6 +31,8 @@ class ImiDataset(BaseDataset):
             # resize the img data to specific size for memory efficiency
             transform = T.Compose([
                 T.Resize((self.resized_height, self.resized_width)),
+                T.RandomCrop((self._croped_height, self._croped_width)),
+                T.ColorJitter(brightness=.2, contrast=.2, saturation=.2, hue=.2)
             ])
             # load third view cam image
             fixed_cam = transform(self.load_image(self.trial, "cam_fixed_color", timestep))
@@ -40,6 +44,7 @@ class ImiDataset(BaseDataset):
             # resize the img data to specific size for memory efficiency
             transform = T.Compose([
                 T.Resize((self.resized_height, self.resized_width)),
+                T.CenterCrop((self._croped_height, self._croped_width))                
             ])
             # load third view cam image
             fixed_cam = transform(self.load_image(self.trial, "cam_fixed_color", timestep))
@@ -55,6 +60,8 @@ class ImiDataset(BaseDataset):
 
         # load the action at this step
         action = self.timestamps["action_history"][timestep]
+        # load position history at this step
+        pos = self.timestamps["pose_history"][timestep][:3]
         # map the action from robot coordinate steps to 0, 1, 2 discrete actions
         # 0 means increase one unit distance
         # 1 means stay still
@@ -64,4 +71,4 @@ class ImiDataset(BaseDataset):
         action = torch.as_tensor(
             [xy_space[action[0]], xy_space[action[1]], z_space[action[2]]])
         # finally return visual image of [..., 3, H, W] and action of size [..., 3]
-        return v_input, action
+        return v_input, action, pose

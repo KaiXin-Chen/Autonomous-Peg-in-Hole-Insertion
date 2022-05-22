@@ -12,8 +12,8 @@ class Imi_networks(nn.Module):
 
         self.model = nn.Sequential(
             nn.Flatten(),
-            nn.BatchNorm1d(512),
-            nn.Linear(512, 100),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024, 100),
             nn.BatchNorm1d(100),
             nn.ReLU(),
             nn.Linear(100, 60),

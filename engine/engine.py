@@ -44,11 +44,6 @@ class RobotLearning(LightningModule):
             demo:
                 The ground truth action from the human demonstration
             """
-            # ADE and maximum_diff can be used as metrics for a batch as well.
-            #ADE = np.average(np.sqrt(np.sum(np.square(pred[:,0:3]-demo[:,0:3]),axis=1)),axis=0)
-            #maximum_diff = np.max(np.sqrt(np.sum(np.square(pred[:,0:3]-demo[:,0:3]),axis=1)))
-            # FDE only make sense when the demo/pred is sequential
-            #FDE = np.sqrt(np.sum(np.square(pred[-1:,0:3]-demo[-1:,0:3]),axis=1))
             # pred is (batch_size, 3, 3)
             # demo is (batch_size, 3)
             return self.cce(pred, demo)
@@ -58,25 +53,14 @@ class RobotLearning(LightningModule):
         gt_action = Variable(gt_action.type(torch.LongTensor)).cuda()
         logits = self.actor(vision_img, self.current_epoch < self.config.freeze_till)
         # The main task here is to reshape and normalize logits and ground truth such that we can apply cross entropy on the results as well as being able to calculate the accuracy
-        N,_ =logits.size()
+        N, _ =logits.size()
         # reshape to 3 channels per sample, which is x,y,z, and each channel has three classes negitive 0 positive so nx3x3
         logits=logits.view(N,3,3)
-        # convert them to probabilities
-        # logits= torch.nn.functional.softmax(logits, -1)
-        # convert gt action to (N,3,3), where at axis=-1 it is a one hot vector
-        # gt_action=torch.sign(gt_action)
-
-        # gt_act_1hot= torch.zeros(N,3,3)
-        # gt_act_1hot[:, :, 0]=1*(gt_action<-0.5)
-        # gt_act_1hot[:, :, 2] = 1 * ( gt_action > 0.5)
-        # gt_act_1hot[:, :, 1] = 1 - gt_act_1hot[:, :, 0] - gt_act_1hot[:, :, 2]
-        # gt_act_1hot = gt_act_1hot.cuda(0)
         loss = compute_loss(logits, gt_action)
-        train_acc = torch.sum(torch.argmax(logits,axis=-1)==gt_action)/N/3
-
-        values = {'train/loss': loss, 'train/acc': train_acc}
+        action_pred = torch.argmax(logits, dim=-1)
+        values = {'train/loss': loss}
         self.log_dict(values)
-        return {'loss': loss, 'acc': train_acc}
+        return loss, ((action_pred == gt_action).sum(), gt_action.numel())
 
     def validation_step(self, batch, batch_idx):
         
@@ -96,29 +80,33 @@ class RobotLearning(LightningModule):
         logits = self.actor(vision_img, self.current_epoch < self.config.freeze_till)
         N, _ = logits.size()
         logits = logits.view(N, 3, 3)
-        # logits = torch.nn.functional.softmax(logits, -1)
-        # gt_action=torch.sign(gt_action)
-        # gt_act_1hot = torch.zeros(N, 3, 3)
-        # gt_act_1hot[:, :, 0] = 1 * (gt_action < 0.5)
-        # gt_act_1hot[:, :, 2] = 1 * (gt_action > 1.5)
-        # gt_act_1hot[:, :, 1] = 1- gt_act_1hot[:, :, 0]-gt_act_1hot[:, :, 2]
-
-        # gt_act_1hot = gt_action.cuda(0)
         loss = compute_loss(logits, gt_action)
-        val_acc = torch.sum(torch.argmax(logits,axis=-1)==gt_action)/N/3
-        values = {'val/loss': loss, 'val/acc': val_acc}
+        action_pred = torch.argmax(logits, dim=-1)
+        values = {'val/loss': loss}
         self.log_dict(values)
-        return {'loss':loss, 'acc':val_acc}
+        return loss, ((action_pred == gt_action).sum(), gt_action.numel())
 
     def validation_epoch_end(self, val_step_outputs):
-        val_acc = torch.tensor([dict['acc'] for dict in val_step_outputs]).cuda()
-        values = {'val/epoch_acc': torch.mean(val_acc)}
-        self.log_dict(values)
+        num = 0
+        de = 0
+        loss, stat = val_step_outputs
+        for (corr, total) in stat:
+            num += corr
+            de += total
+        acc = num / de
+        values = {'val/epoch_acc': acc}
+        self.log_dict(values, on_step=False, on_epoch=True)
 
     def train_epoch_end(self, train_step_outputs):
-        train_acc = torch.tensor([dict['acc'] for dict in train_step_outputs]).cuda()
-        values = {'train/epoch_acc': torch.mean(train_acc)}
-        self.log_dict(values)
+        num = 0
+        de = 0
+        loss, stat = train_step_outputs
+        for (corr, total) in stat:
+            num += corr
+            de += total
+        acc = num / de
+        values = {'train/epoch_acc': acc}
+        self.log_dict(values, on_step=False, on_epoch=True)
 
     def train_dataloader(self):
         """Training dataloader"""
