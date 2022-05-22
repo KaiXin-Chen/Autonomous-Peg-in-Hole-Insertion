@@ -9,20 +9,16 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/boilerplate.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
+          <option name="caretOffset" value="2300" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
           <option name="caretOffset" value="646" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/imi_dataset.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
           <option name="caretOffset" value="0" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/data/data_0214/episode_times.csv" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="592" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/train.csv" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="746" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/val.csv" />
         </OpenedFileInfo>
         <OpenedFileInfo>
           <option name="caretOffset" value="0" />
@@ -37,8 +33,8 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/../anaconda3/envs/CS229Proj/lib/python3.9/site-packages/pytorch_lightning/overrides/base.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="2300" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/training_script/training.py" />
         </OpenedFileInfo>
       </list>
     </option>

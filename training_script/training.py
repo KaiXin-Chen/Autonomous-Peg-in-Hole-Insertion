@@ -4,7 +4,7 @@ This file defines the training pipeline and do the training
 
 import torch
 from dataset.imi_dataset import ImiDataset
-from models.vision_encoders import make_vision_encoder
+from models.vision_encoders import make_vision_encoder,make_pos_encoder
 from models.imi_models import Imi_networks
 from engine.engine import RobotLearning
 from models.actors import robotActor
