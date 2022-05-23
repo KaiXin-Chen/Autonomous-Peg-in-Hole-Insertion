@@ -48,10 +48,10 @@ class RobotLearning(LightningModule):
             # demo is (batch_size, 3)
             return self.cce(pred, demo)
         # TODO: Implement the below training steps, how to calculate loss and accuracy
-        vision_img, gt_action = batch
+        vision_img, gt_action,pos = batch
         vision_img = Variable(vision_img.type(torch.FloatTensor)).cuda()
         gt_action = Variable(gt_action.type(torch.LongTensor)).cuda()
-        logits = self.actor(vision_img, self.current_epoch < self.config.freeze_till)
+        logits = self.actor(vision_img,pos, self.current_epoch < self.config.freeze_till)
         # The main task here is to reshape and normalize logits and ground truth such that we can apply cross entropy on the results as well as being able to calculate the accuracy
         N, _ =logits.size()
         # reshape to 3 channels per sample, which is x,y,z, and each channel has three classes negitive 0 positive so nx3x3
@@ -74,10 +74,10 @@ class RobotLearning(LightningModule):
             return torch.nn.functional.cross_entropy(pred, demo)
         # TODO: Implement the below validation steps, how to calculate loss and accuracy
 
-        vision_img, gt_action = batch
+        vision_img, gt_action,pos = batch
         vision_img = Variable(vision_img.type(torch.FloatTensor)).cuda()
         gt_action = Variable(gt_action.type(torch.LongTensor)).cuda()
-        logits = self.actor(vision_img, self.current_epoch < self.config.freeze_till)
+        logits = self.actor(vision_img, pos,self.current_epoch < self.config.freeze_till)
         N, _ = logits.size()
         logits = logits.view(N, 3, 3)
         loss = compute_loss(logits, gt_action)

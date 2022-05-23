@@ -3,7 +3,7 @@
 --gamma: 0.9
 --period: 3
 --epochs: 50
---num_workers: 8
+--num_workers: 4
 --freeze_till: 5
 --resized_height: 160
 --resized_width: 120

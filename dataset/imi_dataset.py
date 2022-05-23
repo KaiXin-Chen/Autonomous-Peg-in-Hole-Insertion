@@ -15,8 +15,8 @@ class ImiDataset(BaseDataset):
         self.num_cam = args.num_camera
         self.resized_height = args.resized_height
         self.resized_width = args.resized_width
-        self._croped_height = args.resized_height * (1 - args.crop_per)
-        self._croped_width = args.resized_width * (1 - args.crop_per)
+        self._croped_height = int(args.resized_height * (1 - args.crop_per))
+        self._croped_width = int(args.resized_width * (1 - args.crop_per))
         self.trial, self.timestamps, self.num_frames = self.get_episode(
             dataset_idx)
 
@@ -71,4 +71,4 @@ class ImiDataset(BaseDataset):
         action = torch.as_tensor(
             [xy_space[action[0]], xy_space[action[1]], z_space[action[2]]])
         # finally return visual image of [..., 3, H, W] and action of size [..., 3]
-        return v_input, action, pose
+        return v_input, action, pos

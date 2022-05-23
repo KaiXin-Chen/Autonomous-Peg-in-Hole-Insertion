@@ -31,8 +31,8 @@ def main(args):
     val_set = torch.utils.data.ConcatDataset(
         [ImiDataset(args.val_csv, args, i, args.data_folder, False) for i in
          range(val_num_episode)])
-    train_loader = DataLoader(train_set, args.batch_size, num_workers=8, shuffle=True)
-    val_loader = DataLoader(val_set, 1, num_workers=8)
+    train_loader = DataLoader(train_set, args.batch_size, num_workers=4, shuffle=True)
+    val_loader = DataLoader(val_set, 1, num_workers=4)
 
     # define vision encoder and imitation network and combine them in the actor
     vision_encoder = make_vision_encoder()
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     p.add("--epochs", default=50,type=int)
     p.add("--num_episode", default=None)
     p.add("--resume", default=None)
-    p.add("--num_workers", default=2, type=int) # defult used to be 8
+    p.add("--num_workers", default=4, type=int) # defult used to be 8
     p.add("--num_camera", default=1, type=int)
     # imi_stuff
     p.add("--freeze_till", required = True, type=int)
