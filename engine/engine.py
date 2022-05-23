@@ -99,7 +99,7 @@ class RobotLearning(LightningModule):
             de += total
 
         acc = num / de
-        values = {'val/epoch_acc': acc}
+        values = {'val/acc': acc}
         self.log_dict(values)#, on_step=False, on_epoch=True)
 
     def train_epoch_end(self, train_step_outputs):
