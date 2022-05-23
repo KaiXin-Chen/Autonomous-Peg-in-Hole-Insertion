@@ -4,7 +4,7 @@
 --period: 3
 --epochs: 50
 --num_workers: 4
---freeze_till: 5
+--freeze_till: 10
 --resized_height: 160
 --resized_width: 120
 --crop_per: 0.1

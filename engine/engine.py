@@ -91,7 +91,6 @@ class RobotLearning(LightningModule):
     def validation_epoch_end(self, val_step_outputs):
         num = 0
         de = 0
-
         for val_step_output in val_step_outputs:
             loss, stat = val_step_output
             corr, total= stat
@@ -100,9 +99,9 @@ class RobotLearning(LightningModule):
 
         acc = num / de
         values = {'val/acc': acc}
-        self.log_dict(values)#, on_step=False, on_epoch=True)
+        self.log_dict(values, on_step=False, on_epoch=True)
 
-    def train_epoch_end(self, train_step_outputs):
+    def training_epoch_end(self, train_step_outputs):
         num = 0
         de = 0
         for train_step_output in train_step_outputs:
@@ -112,7 +111,7 @@ class RobotLearning(LightningModule):
             num += corr
             de += total
         acc = num / de
-        values = {'train/epoch_acc': acc}
+        values = {'train/acc': acc}
         self.log_dict(values, on_step=False, on_epoch=True)
 
 

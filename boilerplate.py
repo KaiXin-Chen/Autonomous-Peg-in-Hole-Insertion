@@ -63,7 +63,7 @@ def start_training(args, exp_dir, pl_module, monitor="val/acc"):
         check_val_every_n_epoch=1,
         log_every_n_steps=1,
         logger=logger,
-        #accelerator='gpu'
+        accelerator='gpu'
     )
 
     # This part defines how the trainer fit the model and resume training

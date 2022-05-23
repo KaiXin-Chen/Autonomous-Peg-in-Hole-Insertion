@@ -5,44 +5,44 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="2928" />
+          <option name="caretOffset" value="0" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/imi_dataset.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="54" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/DatasetPlate.py" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="624" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/training_script/training.py" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="1658" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/models/vision_encoders.py" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="82" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/config/imi_config.yaml" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="58" />
+          <option name="caretOffset" value="0" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/models/actors.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="2181" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/boilerplate.py" />
+          <option name="caretOffset" value="3840" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="49922" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/../anaconda3/envs/CS229Proj/lib/python3.9/site-packages/torch/nn/modules/module.py" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="601" />
+          <option name="caretOffset" value="595" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/models/imi_models.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="3841" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
+          <option name="caretOffset" value="1552" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/training_script/training.py" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2260" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/boilerplate.py" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="490" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/train.csv" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/val.csv" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="159" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/imi_config.yaml" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/models/vision_encoders.py" />
         </OpenedFileInfo>
       </list>
     </option>

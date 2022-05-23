@@ -13,12 +13,16 @@ class Imi_networks(nn.Module):
         self.model = nn.Sequential(
             nn.Flatten(),
             nn.BatchNorm1d(1024),
-            nn.Linear(1024, 100),
+            nn.Linear(1024, 150),
+            nn.BatchNorm1d(150),
+            nn.ReLU(),
+            nn.Linear(150, 100),
             nn.BatchNorm1d(100),
             nn.ReLU(),
-            nn.Linear(100, 60),
+            nn.Linear(100, 50),
+            nn.BatchNorm1d(50),
             nn.ReLU(),
-            nn.Linear(60, 9),
+            nn.Linear(50, 9),
         )
 
     def forward(self, x):
