@@ -61,7 +61,7 @@ class RobotLearning(LightningModule):
         action_pred = torch.argmax(logits, dim=-1)
         values = {'train/loss': loss}
         self.log_dict(values)
-        return loss, ((action_pred == gt_action).sum(), gt_action.numel())
+        return  {"loss":loss,"correct_count": (action_pred == gt_action).sum(), "total_count":gt_action.numel() }
 
     def validation_step(self, batch, batch_idx):
         
@@ -91,24 +91,30 @@ class RobotLearning(LightningModule):
     def validation_epoch_end(self, val_step_outputs):
         num = 0
         de = 0
-        loss, stat = val_step_outputs
-        for (corr, total) in stat:
+
+        for val_step_output in val_step_outputs:
+            loss, stat = val_step_output
+            corr, total= stat
             num += corr
             de += total
+
         acc = num / de
         values = {'val/epoch_acc': acc}
-        self.log_dict(values, on_step=False, on_epoch=True)
+        self.log_dict(values)#, on_step=False, on_epoch=True)
 
     def train_epoch_end(self, train_step_outputs):
         num = 0
         de = 0
-        loss, stat = train_step_outputs
-        for (corr, total) in stat:
+        for train_step_output in train_step_outputs:
+            loss=train_step_output["loss"]
+            corr=train_step_output["correct_count"]
+            total = train_step_output["total_count"]
             num += corr
             de += total
         acc = num / de
         values = {'train/epoch_acc': acc}
         self.log_dict(values, on_step=False, on_epoch=True)
+
 
     def train_dataloader(self):
         """Training dataloader"""

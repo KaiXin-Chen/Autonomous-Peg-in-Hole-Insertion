@@ -9,10 +9,6 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/imi_dataset.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/data/data_0214/episode_times.csv" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
           <option name="caretOffset" value="54" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/dataset/DatasetPlate.py" />
         </OpenedFileInfo>
@@ -21,12 +17,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/training_script/training.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="82" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/config/imi_config.yaml" />
+          <option name="caretOffset" value="1658" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/models/vision_encoders.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="2367" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
+          <option name="caretOffset" value="82" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/imi_config.yaml" />
         </OpenedFileInfo>
         <OpenedFileInfo>
           <option name="caretOffset" value="58" />
@@ -41,8 +37,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/../anaconda3/envs/CS229Proj/lib/python3.9/site-packages/torch/nn/modules/module.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="1258" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/models/vision_encoders.py" />
+          <option name="caretOffset" value="601" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/models/imi_models.py" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="3841" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
         </OpenedFileInfo>
       </list>
     </option>
