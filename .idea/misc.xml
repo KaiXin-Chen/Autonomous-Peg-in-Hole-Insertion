@@ -17,10 +17,6 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/engine/engine.py" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="627" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/models/imi_models.py" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
           <option name="caretOffset" value="1589" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/models/vision_encoders.py" />
         </OpenedFileInfo>
@@ -41,8 +37,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/val.csv" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="102" />
+          <option name="caretOffset" value="159" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/config/imi_config.yaml" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="627" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/models/imi_models.py" />
         </OpenedFileInfo>
       </list>
     </option>

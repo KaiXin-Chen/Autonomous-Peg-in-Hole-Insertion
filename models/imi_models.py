@@ -19,10 +19,7 @@ class Imi_networks(nn.Module):
             nn.Linear(150, 100),
             nn.BatchNorm1d(100),
             nn.ReLU(),
-            nn.Linear(100, 50),
-            nn.BatchNorm1d(50),
-            nn.ReLU(),
-            nn.Linear(50, 9),
+            nn.Linear(100, 9),
         )
 
     def forward(self, x):
