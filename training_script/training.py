@@ -3,7 +3,7 @@ This file defines the training pipeline and do the training
 """
 
 import torch
-from dataset.imi_dataset import ImiDataset
+from dataset.imi_dataset import ImiDataset, ImiDatasetLabelCount
 from models.vision_encoders import make_vision_encoder,make_pos_encoder
 from models.imi_models import Imi_networks
 from engine.engine import RobotLearning
@@ -25,13 +25,28 @@ def main(args):
         train_num_episode = args.num_episode
         val_num_episode = args.num_episode
 
+    
+    train_label_set = torch.utils.data.ConcatDataset([ImiDatasetLabelCount(args.train_csv, args, i, args.data_folder) for i in range(train_num_episode)])
     # define dataset and data loaders
     train_set = torch.utils.data.ConcatDataset(
         [ImiDataset(args.train_csv, args, i, args.data_folder) for i in range(train_num_episode)])
     val_set = torch.utils.data.ConcatDataset(
-        [ImiDataset(args.val_csv, args, i, args.data_folder, False) for i in
+        [ImiDataset(args.train_csv, args, i, args.data_folder, False) for i in
          range(val_num_episode)])
-    train_loader = DataLoader(train_set, args.batch_size, num_workers=4, shuffle=True)
+        
+    # create weighted sampler to balance samples
+    train_label = []
+    for keyboard in train_label_set:
+        train_label.append(keyboard)
+    class_sample_count = np.zeros(27)
+    for t in np.unique(train_label):
+        class_sample_count[t] = len(np.where(train_label == t)[0])
+    weight = 1. / (class_sample_count + 1e-5)
+    samples_weight = np.array([weight[t] for t in train_label])
+    samples_weight = torch.from_numpy(samples_weight)
+    sampler = torch.utils.data.WeightedRandomSampler(samples_weight.type('torch.DoubleTensor'), len(samples_weight))
+
+    train_loader = DataLoader(train_set, args.batch_size, num_workers=4, sampler=sampler)
     val_loader = DataLoader(val_set, 1, num_workers=4)
 
     # define vision encoder and imitation network and combine them in the actor
@@ -54,12 +69,12 @@ if __name__ == "__main__":
 
     p = configargparse.ArgParser()
     p.add("-c", "--config", is_config_file=True, default="config/imi_config.yaml")
-    p.add("--batch_size", default=8,type=int)
+    p.add("--batch_size", default=16,type=int)
     p.add("--lr", default=0.001, type=float)
     p.add("--gamma", default=0.9, type=float)
     p.add("--period", default=3,type=int)
     p.add("--epochs", default=50,type=int)
-    p.add("--num_episode", default=None)
+    p.add("--num_episode", default=None, type=int)
     p.add("--resume", default=None)
     p.add("--num_workers", default=4, type=int) # defult used to be 8
     p.add("--num_camera", default=1, type=int)
@@ -68,7 +83,7 @@ if __name__ == "__main__":
     # data
     p.add("--train_csv", default="train.csv")
     p.add("--val_csv", default="val.csv")
-    p.add("--data_folder", default="data/data_0214/test_recordings")
+    p.add("--data_folder", default="data/data_0331/test_recordings")
     p.add("--resized_height", required=True, type=int)
     p.add("--resized_width", required=True, type=int)
     p.add("--crop_per", required=True, type=float)

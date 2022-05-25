@@ -27,22 +27,37 @@ def make_vision_encoder():
     vision_extractor = create_feature_extractor(vision_extractor, ["avgpool"])
     return Encoder(vision_extractor)
 
-def make_pos_encoder():
-    '''
-    pos_extractor = resnet18(pretrained=True)
-    pos_extractor.conv1 = nn.Conv2d(1, 64, kernel_size=7, padding=3, bias=True)
-    # pos_extractor.conv1.weight.data.fill_(0.01)
-    # pos_extractor.conv1.bias.data.fill_(0.01)
-    pos_extractor = create_feature_extractor(pos_extractor, ["avgpool"])
-    return Encoder(pos_extractor)
-    '''
 
-    return  nn.Sequential(
+class pos_feature_extactor(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.model = nn.Sequential(
             nn.Flatten(),
             nn.Linear(3, 64),
             nn.ReLU(),
             nn.Linear(64, 512),
-
         )
 
+    def forward(self, x):
+        return self.model(x)
 
+def make_pos_encoder():
+    return pos_feature_extactor()
+
+# def make_pos_encoder():
+#     '''
+#     pos_extractor = resnet18(pretrained=True)
+#     pos_extractor.conv1 = nn.Conv2d(1, 64, kernel_size=7, padding=3, bias=True)
+#     # pos_extractor.conv1.weight.data.fill_(0.01)
+#     # pos_extractor.conv1.bias.data.fill_(0.01)
+#     pos_extractor = create_feature_extractor(pos_extractor, ["avgpool"])
+#     return Encoder(pos_extractor)
+#     '''
+
+#     return  nn.Sequential(
+#             nn.Flatten(),
+#             nn.Linear(3, 64),
+#             nn.ReLU(),
+#             nn.Linear(64, 512),
+
+#         )

@@ -52,6 +52,7 @@ class RobotLearning(LightningModule):
         vision_img = Variable(vision_img.type(torch.FloatTensor)).cuda()
         gt_action = Variable(gt_action.type(torch.LongTensor)).cuda()
         pos = Variable(pos.type(torch.FloatTensor)).cuda()
+        
         logits = self.actor(vision_img,pos, self.current_epoch < self.config.freeze_till)
         # The main task here is to reshape and normalize logits and ground truth such that we can apply cross entropy on the results as well as being able to calculate the accuracy
         N, _ =logits.size()

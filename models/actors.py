@@ -15,8 +15,13 @@ class robotActor(torch.nn.Module):
         self.vision_encoder = vision_encoder
         self.pos_encoder = pos_encoder
         self.imi_models = imi_models
+        self.bottleneck = nn.Linear(1024, 512)
 
     def forward(self, visual_input, pos_input, freeze):
+        
+        batch, channel, H, W = visual_input.shape
+        visual_input = visual_input.view(-1, 3, H, W) # (2*N / N, 3/6, H, W)
+
         if freeze:
             with torch.no_grad():
                 visual_feats = self.vision_encoder(visual_input).detach()
@@ -24,6 +29,10 @@ class robotActor(torch.nn.Module):
         else:
             visual_feats = self.vision_encoder(visual_input)
             pos_feats = self.pos_encoder(pos_input)
+        #convert back to (batch, 2*embeds)    
+        visual_feats = visual_feats.view(batch, -1)
+        if channel == 6:
+            visual_feats = self.bottleneck(visual_feats) #(batch, 512)
         embeds = torch.cat((visual_feats, pos_feats), dim=-1)
         action_logits = self.imi_models(embeds)
         return action_logits
