@@ -1,0 +1,5 @@
+setup.py
+CS229project.egg-info/PKG-INFO
+CS229project.egg-info/SOURCES.txt
+CS229project.egg-info/dependency_links.txt
+CS229project.egg-info/top_level.txt
