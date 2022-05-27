@@ -1,8 +1,8 @@
 --batch_size: 8
---lr: 0.001
+--lr: 0.002
 --gamma: 0.9
 --period: 3
---epochs: 50
+--epochs: 500
 --num_workers: 4
 --freeze_till: 0
 --resized_height: 160

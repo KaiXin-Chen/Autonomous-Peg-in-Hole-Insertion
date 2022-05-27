@@ -34,8 +34,8 @@ class RobotLearning(LightningModule):
         self.val_set_loader = val_set_loader
         self.scheduler = scheduler
         self.config = config
-        self.cce = torch.nn.CrossEntropyLoss()
-
+        # self.cce = torch.nn.CrossEntropyLoss()
+        self.cce = torch.nn.KLDivLoss(reduction="batchmean", log_target=True)
     def training_step(self, batch, batch_idx):
         def compute_loss(pred, demo):
             """
@@ -58,11 +58,12 @@ class RobotLearning(LightningModule):
         N, _ =logits.size()
         # reshape to 3 channels per sample, which is x,y,z, and each channel has three classes negitive 0 positive so nx3x3
         logits=logits.view(N,3,3)
-        loss = compute_loss(logits, gt_action)
+        loss = compute_loss(F.log_softmax(logits, dim=1), F.log_softmax(F.one_hot(gt_action, 3).type(torch.float), dim=1))
         action_pred = torch.argmax(logits, dim=-1)
         values = {'train/loss': loss}
+        # print(loss, gt_action, action_pred, logits)
         self.log_dict(values)
-        return  {"loss":loss,"correct_count": (action_pred == gt_action).sum(), "total_count":gt_action.numel() }
+        return  {"loss":loss,"correct_count": (action_pred == gt_action).sum(), "total_count":(action_pred == gt_action).numel() }
 
     def validation_step(self, batch, batch_idx):
         
@@ -73,7 +74,8 @@ class RobotLearning(LightningModule):
             demo:
                 The ground truth action from the human demonstration
             """
-            return torch.nn.functional.cross_entropy(pred, demo)
+            # return torch.nn.functional.cross_entropy(pred, demo)
+            return torch.nn.functional.kl_div(pred, demo,reduction="batchmean", log_target=True)
         # TODO: Implement the below validation steps, how to calculate loss and accuracy
 
         vision_img, gt_action,pos = batch
@@ -83,11 +85,11 @@ class RobotLearning(LightningModule):
         logits = self.actor(vision_img, pos,self.current_epoch < self.config.freeze_till)
         N, _ = logits.size()
         logits = logits.view(N, 3, 3)
-        loss = compute_loss(logits, gt_action)
+        loss = compute_loss(F.log_softmax(logits, dim=1), F.log_softmax(F.one_hot(gt_action, 3).type(torch.float), dim=1))
         action_pred = torch.argmax(logits, dim=-1)
         values = {'val/loss': loss}
         self.log_dict(values)
-        return loss, ((action_pred == gt_action).sum(), gt_action.numel())
+        return loss, ((action_pred == gt_action).sum(), (action_pred == gt_action).numel())
 
     def validation_epoch_end(self, val_step_outputs):
         num = 0
@@ -114,7 +116,7 @@ class RobotLearning(LightningModule):
         acc = num / de
         values = {'train/acc': acc}
         self.log_dict(values, on_step=False, on_epoch=True)
-
+        # self.scheduler.step()
 
     def train_dataloader(self):
         """Training dataloader"""

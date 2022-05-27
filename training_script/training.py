@@ -55,8 +55,9 @@ def main(args):
     imi_model = Imi_networks()
     actor = robotActor(vision_encoder, pos_encoder, imi_model,args)
 
-    # define optimizer and lr scheduler
+    # # define optimizer and lr scheduler
     optimizer = torch.optim.Adam(actor.parameters(), lr=args.lr, weight_decay=1e-5)
+    # optimizer = torch.optim.SGD(actor.parameters(), lr=args.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=args.period, gamma=args.gamma)
     # save config
     exp_dir = save_config(args)
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     p.add("--lr", default=0.001, type=float)
     p.add("--gamma", default=0.9, type=float)
     p.add("--period", default=3,type=int)
-    p.add("--epochs", default=50,type=int)
+    p.add("--epochs", default=500,type=int)
     p.add("--num_episode", default=None, type=int)
     p.add("--resume", default=None)
     p.add("--num_workers", default=4, type=int) # defult used to be 8

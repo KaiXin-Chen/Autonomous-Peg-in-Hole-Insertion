@@ -33,9 +33,9 @@ class pos_feature_extactor(nn.Module):
         super().__init__()
         self.model = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(3, 64),
+            nn.Linear(3, 128),
             nn.ReLU(),
-            nn.Linear(64, 512),
+            nn.Linear(128, 512),
         )
 
     def forward(self, x):
