@@ -7,7 +7,7 @@ from dataset.imi_dataset import ImiDataset, ImiDatasetLabelCount
 from models.vision_encoders import make_vision_encoder,make_pos_encoder
 from models.imi_models import Imi_networks
 from engine.engine import RobotLearning
-from models.actors import robotActor
+from models.actors import robotActor, TransformerRobotActor
 from torch.utils.data import DataLoader
 from boilerplate import *
 import pandas as pd
@@ -53,7 +53,7 @@ def main(args):
     vision_encoder = make_vision_encoder()
     pos_encoder = make_pos_encoder()
     imi_model = Imi_networks()
-    actor = robotActor(vision_encoder, pos_encoder, imi_model,args)
+    actor = TransformerRobotActor(vision_encoder, pos_encoder, imi_model,args)
 
     # # define optimizer and lr scheduler
     optimizer = torch.optim.Adam(actor.parameters(), lr=args.lr, weight_decay=1e-5)
@@ -79,6 +79,7 @@ if __name__ == "__main__":
     p.add("--resume", default=None)
     p.add("--num_workers", default=4, type=int) # defult used to be 8
     p.add("--num_camera", default=1, type=int)
+    p.add("--use_convnext", default=False)
     # imi_stuff
     p.add("--freeze_till", required = True, type=int)
     # data
@@ -88,6 +89,8 @@ if __name__ == "__main__":
     p.add("--resized_height", required=True, type=int)
     p.add("--resized_width", required=True, type=int)
     p.add("--crop_per", required=True, type=float)
+    p.add("--hist_len", required=True, type=int)
+
 
 
 

@@ -2,6 +2,7 @@
 This file will include networks for visual inputs
 """
 from torchvision.models import resnet18
+from torchvision.models import convnext_tiny
 from torchvision.models.feature_extraction import create_feature_extractor,get_graph_node_names
 import torch
 from torch import nn
@@ -21,7 +22,7 @@ class Encoder(nn.Module):
 
 def make_vision_encoder():
     # define a visual encoder using resnet 18, with pretrained parameters
-    vision_extractor = resnet18(pretrained=True)
+    vision_extractor =  resnet18(pretrained=True)
     # take the output after pooling layer and before final linear layer
     # this layer contains the visual features we want
     vision_extractor = create_feature_extractor(vision_extractor, ["avgpool"])

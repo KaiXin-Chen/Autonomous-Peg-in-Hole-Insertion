@@ -2,9 +2,10 @@
 --lr: 0.002
 --gamma: 0.9
 --period: 3
---epochs: 500
+--epochs: 80
 --num_workers: 4
 --freeze_till: 0
---resized_height: 160
+--resized_height: 180
 --resized_width: 120
 --crop_per: 0.1
+--hist_len: 3
