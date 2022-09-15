@@ -1,10 +1,3 @@
-# Implementation Guideline
-- Please create the virtual environment first
-
-- Then run "pip install -r requirements.txt"
-
-- Put the data into the data folder, change folder name and run the convert file in the util folder
-
-- Implementation different Modules then conduct the training
-
-- run split dataset.py
+# Autonomous Peg in Hole insertion
+## Example Setup 
+[![Watch the video](https://github.com/KaiXin-Chen/Autonomous-Peg-in-Hole-Insertion/blob/master/setup.PNG)](https://www.youtube.com/watch?v=mbyZ9o9rxJU)
